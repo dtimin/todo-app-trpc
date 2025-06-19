@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Task, Category, TodoListProps } from '@/types';
+import { Task, TodoListProps } from '@/types';
 
 import styles from './TodoList.module.css';
 
@@ -12,16 +12,6 @@ const TodoList: React.FC<TodoListProps> = ({
   onEditTask,
   onDeleteTask,
 }) => {
-  // Filter tasks based on selected category
-  const filteredTasks = selectedCategoryId
-    ? tasks.filter(task => task.categoryId === selectedCategoryId)
-    : tasks;
-
-  // Sort tasks by updatedAt timestamp (newest first)
-  const sortedTasks = [...filteredTasks].sort((a, b) => 
-    new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-  );
-
   // Get category name for the header
   const categoryName = selectedCategoryId
     ? categories.find(cat => cat.id === selectedCategoryId)?.name
@@ -35,7 +25,7 @@ const TodoList: React.FC<TodoListProps> = ({
   };
 
   // Format date for display
-  const formatDate = (date: Date) => {
+  const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -56,13 +46,13 @@ const TodoList: React.FC<TodoListProps> = ({
         </button>
       </div>
 
-      {sortedTasks.length === 0 ? (
+      {tasks.length === 0 ? (
         <div className={styles.emptyState}>
           <p>No tasks found. Click "Add Task" to create one.</p>
         </div>
       ) : (
         <ul className={styles.taskList}>
-          {sortedTasks.map(task => {
+          {tasks.map(task => {
             return (
               <li key={task.id} className={styles.taskItem}>
                 <div className={styles.taskHeader}>

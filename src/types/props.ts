@@ -10,14 +10,14 @@ export interface TodoListProps {
 }
 
 export interface TaskFormProps {
-  task?: Task; // Optional for edit mode
+  task?: Task | null;
   categories: Category[];
   onSubmit: (task: Partial<Task>) => void;
   onCancel: () => void;
 }
 
 export interface CategoryFormProps {
-  category?: Category; // Optional for edit mode
+  category?: Category | null;
   onSubmit: (category: Partial<Category>) => void;
   onCancel: () => void;
 }

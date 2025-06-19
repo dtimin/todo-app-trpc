@@ -12,6 +12,26 @@
 npm run dev
 ```
 
+## Architecture Overview
+
+This application follows a modern full-stack architecture:
+
+### **State Management**
+- **Server State**: Managed by tRPC + React Query for data fetching, caching, and synchronization
+- **Client State**: Managed by Zustand store for UI state (modals, editing states, filters)
+
+### **Store Structure**
+The Zustand store is organized into focused slices:
+- **UI State**: Modal open/close states (`createTask`, `editTask`, `createCategory`)
+- **Editing State**: Currently editing task/category objects
+- **Filter State**: Category filters, search queries, and display preferences
+
+### **Data Flow**
+1. **page.tsx** → Initial data fetching via React Query
+2. **tRPC** → Type-safe API layer
+3. **Prisma** → Database operations
+4. **Cache invalidation** → Automatic updates after mutations
+
 ## package.json scripts
 
 **Prisma/Database Commands:**
@@ -68,19 +88,20 @@ This project is a test assignment to evaluate your skills and familiarity with N
 
 ## Project Requirements
 ### 1. NextJS 14 Application
-   Use NextJS 14 for both the frontend and backend.
-   Implement the application using TypeScript.
-   Use a SQL database (preferably PostgreSQL, but others are fine too)
+Use NextJS 14 for both the frontend and backend.
+Implement the application using TypeScript.
+Use a SQL database (preferably PostgreSQL, but others are fine too)
 ### 2. Frontend
-   Implement a simple user interface that interacts with the backend via TRPC.
-   Use Zustand for state management.
-   Ensure the UI is clean, responsive, and user-friendly.
+Implement a simple user interface that interacts with the backend via TRPC.
+Use Zustand for state management.
+Ensure the UI is clean, responsive, and user-friendly.
 ### 3. Backend
-   Implement the backend logic within NextJS using API routes.
-   Use Prisma for database interactions.
-   Use TRPC for type-safe API calls.
+Implement the backend logic within NextJS using API routes.
+Use Prisma for database interactions.
+Use TRPC for type-safe API calls.
 ### 4. Data Model
-   Design a simple data model using Prisma. For instance, a model for managing a list of tasks (to-do list) or user profiles.
+Design a simple data model using Prisma. For instance, a model for managing a list of tasks (to-do list) or user profiles.
 ### 5. Features
-   Implement CRUD operations for the chosen data model.
-   Ensure all CRUD operations are exposed via TRPC endpoints.
+Implement CRUD operations for the chosen data model.
+Ensure all CRUD operations are exposed via TRPC endpoints.
+```
