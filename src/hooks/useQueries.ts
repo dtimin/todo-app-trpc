@@ -1,136 +1,70 @@
 'use client';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { 
-  getCategories, 
-  createCategory, 
-  deleteCategory, 
-  getAllTasks, 
-  createTask, 
-  updateTask, 
-  deleteTask 
-} from '@/lib/actions';
-import { Category, Task } from '@/types';
-
-// Query keys
-const QUERY_KEYS = {
-  categories: 'categories',
-  tasks: 'tasks',
-};
+import { api } from '@/lib/trpc/client';
 
 // Query hooks
 export function useCategories() {
-  return useQuery({
-    queryKey: [QUERY_KEYS.categories],
-    queryFn: async () => {
-      const result = await getCategories();
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to fetch categories');
-      }
-      return result.data || [];
-    },
+  return api.categories.getAll.useQuery(undefined, {
+    select: (data) => data ?? [],
   });
 }
 
 export function useAllTasks() {
-  return useQuery({
-    queryKey: [QUERY_KEYS.tasks],
-    queryFn: async () => {
-      const result = await getAllTasks();
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to fetch tasks');
-      }
-      return result.data || [];
-    },
+  return api.tasks.getAll.useQuery(undefined, {
+    select: (data) => data ?? [],
   });
 }
 
 // Mutation hooks
 export function useCreateCategory() {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: async (data: { name: string }) => {
-      const result = await createCategory(data);
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to create category');
-      }
-      return result.data;
-    },
+  const utils = api.useUtils();
+
+  return api.categories.create.useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.categories] });
+      utils.categories.getAll.invalidate();
+      utils.tasks.getAll.invalidate(); // Also invalidating tasks since they include category data
     },
   });
 }
 
 export function useDeleteCategory() {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: async (id: number) => {
-      const result = await deleteCategory(id);
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to delete category');
-      }
-      return id;
-    },
+  const utils = api.useUtils();
+
+  return api.categories.delete.useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.categories] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.tasks] });
+      utils.categories.getAll.invalidate();
+      utils.tasks.getAll.invalidate(); // Tasks might be affected
     },
   });
 }
 
 export function useCreateTask() {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: async (data: { name: string; description?: string; categoryId?: number }) => {
-      const result = await createTask(data);
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to create task');
-      }
-      return result.data;
-    },
+  const utils = api.useUtils();
+
+  return api.tasks.create.useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.tasks] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.categories] });
+      // Invalidate tasks list to refetch
+      utils.tasks.getAll.invalidate();
     },
   });
 }
 
 export function useUpdateTask() {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: async ({ id, data }: { id: number; data: { name?: string; description?: string; categoryId?: number | null } }) => {
-      const result = await updateTask(id, data);
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to update task');
-      }
-      return result.data;
-    },
+  const utils = api.useUtils();
+
+  return api.tasks.update.useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.tasks] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.categories] });
+      utils.tasks.getAll.invalidate();
     },
   });
 }
 
 export function useDeleteTask() {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: async (id: number) => {
-      const result = await deleteTask(id);
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to delete task');
-      }
-      return id;
-    },
+  const utils = api.useUtils();
+
+  return api.tasks.delete.useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.tasks] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.categories] });
+      utils.tasks.getAll.invalidate();
     },
   });
 }

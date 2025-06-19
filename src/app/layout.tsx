@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import QueryProvider from "@/providers/QueryProvider";
+import TRPCProvider from "@/providers/TRPCProvider";
 
 export const metadata: Metadata = {
   title: "Todo App - Next.js 14",
@@ -16,11 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <QueryProvider>
+        <TRPCProvider>
           <div className="app-container">
             {children}
           </div>
-        </QueryProvider>
+        </TRPCProvider>
       </body>
     </html>
   );
