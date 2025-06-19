@@ -1,0 +1,34 @@
+{
+  "name": "todo-api-next",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:reset": "prisma migrate reset",
+    "prisma:seed": "prisma db seed",
+    "docker:run": "docker compose up -d",
+    "docker:stop": "docker compose down",
+    "docker:restart": "docker compose restart",
+    "docker:build": "docker compose build --no-cache",
+    "docker:log:app": "docker compose logs -f app",
+    "docker:log:db": "docker compose logs -f postgres"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.10.1",
+    "pg": "^8.16.1",
+    "pg-hstore": "^2.3.4",
+    "prisma": "^6.10.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {},
+  "engines": {
+    "pnpm": ">=10.7.0",
+    "node": ">=22.1.0"
+  },
+  "author": "Denis Timin",
+  "license": "UNLICENSED"
+}

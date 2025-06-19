@@ -1,4 +1,4 @@
-npm-debug.log
+# node_modules
 node_modules
 
 # Idea
@@ -6,3 +6,9 @@ node_modules
 
 # Env
 .env
+
+# Prisma generated files
+prisma/generated
+
+# Docker volume for Postgres
+db-data/
