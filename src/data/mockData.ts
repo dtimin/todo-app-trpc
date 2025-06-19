@@ -8,14 +8,12 @@ export const categories: Category[] = [
   {
     id: 1,
     name: 'Work',
-    isDeleted: false,
     createdAt: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
     updatedAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
   },
   {
     id: 2,
     name: 'Personal',
-    isDeleted: false,
     createdAt: new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000), // 6 days ago
     updatedAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
   },
@@ -29,14 +27,12 @@ export const categories: Category[] = [
   {
     id: 4,
     name: 'Health',
-    isDeleted: false,
     createdAt: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000), // 4 days ago
     updatedAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
   },
   {
     id: 5,
     name: 'Archived',
-    isDeleted: true, // Soft-deleted for testing
     createdAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000), // 10 days ago
     updatedAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
   },
@@ -135,7 +131,7 @@ export const tasks: Task[] = [
     id: 12,
     name: 'Old archived task',
     description: 'This task belongs to a soft-deleted category',
-    categoryId: 5, // Archived (soft-deleted)
+    categoryId: 5,
     createdAt: new Date(now.getTime() - 9 * 24 * 60 * 60 * 1000), // 9 days ago
     updatedAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
   },

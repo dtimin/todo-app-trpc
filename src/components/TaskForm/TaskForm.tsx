@@ -19,7 +19,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
-  
+
   // Validation state
   const [errors, setErrors] = useState<{
     name?: string;
@@ -34,17 +34,17 @@ const TaskForm: React.FC<TaskFormProps> = ({
     }
   }, [task]);
 
-  // Filter out soft-deleted categories
-  const activeCategories = categories.filter(category => !category.isDeleted);
+  // Use all categories
+  const activeCategories = categories;
 
   // Form validation
   const validateForm = (): boolean => {
     const newErrors: { name?: string } = {};
-    
+
     if (!name.trim()) {
       newErrors.name = 'Task name is required';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -52,11 +52,11 @@ const TaskForm: React.FC<TaskFormProps> = ({
   // Form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     onSubmit({
       id: task?.id,
       name: name.trim(),
@@ -70,7 +70,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
       <h2 className={styles.formTitle}>
         {task ? 'Edit Task' : 'Add New Task'}
       </h2>
-      
+
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <label htmlFor="taskName" className={styles.label}>
@@ -92,7 +92,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
             </div>
           )}
         </div>
-        
+
         <div className={styles.formGroup}>
           <label htmlFor="taskDescription" className={styles.label}>
             Description
@@ -105,7 +105,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
             placeholder="Enter task description (optional)"
           />
         </div>
-        
+
         <div className={styles.formGroup}>
           <label htmlFor="taskCategory" className={styles.label}>
             Category
@@ -124,7 +124,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
             ))}
           </select>
         </div>
-        
+
         <div className={styles.buttonGroup}>
           <button
             type="button"

@@ -15,7 +15,7 @@ async function main() {
 		skipDuplicates: true,
 	});
 
-	console.log(`📂 Created ${categories.count} categories`);
+	console.log(`Created ${categories.count} categories`);
 
 	// Create tasks
 	const tasks = await prisma.task.createMany({
@@ -48,13 +48,19 @@ async function main() {
 		skipDuplicates: true,
 	});
 
+
+	// Set PostgreSQL sequences
+	await prisma.$executeRaw`SELECT setval('categories_id_seq', 4, false);`;
+	await prisma.$executeRaw`SELECT setval('tasks_id_seq', 4, false);`;
+
 	console.log(`Created ${tasks.count} tasks`);
+	console.log('🔄 Reset sequences to start from 4');
 	console.log('Seed completed successfully!');
 }
 
 main()
 	.catch((e) => {
-		console.error('❌ Seed failed:', e);
+		console.error('Seed failed:', e);
 		process.exit(1);
 	})
 	.finally(async () => {

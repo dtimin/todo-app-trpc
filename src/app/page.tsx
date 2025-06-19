@@ -6,16 +6,31 @@ import CategorySidebar from '../components/CategorySidebar/CategorySidebar';
 import TodoList from '../components/TodoList/TodoList';
 import TaskForm from '../components/TaskForm/TaskForm';
 import CategoryForm from '../components/CategoryForm/CategoryForm';
-import mockData from '../data/mockData';
 
 import { Task, Category } from '@/types';
+import { 
+  useCategories, 
+  useAllTasks, 
+  useCreateCategory, 
+  useDeleteCategory, 
+  useCreateTask, 
+  useUpdateTask, 
+  useDeleteTask 
+} from '@/hooks/useQueries';
 
 import styles from './page.module.css';
 
 export default function Home() {
-  // State for categories and tasks
-  const [categories, setCategories] = useState<Category[]>(mockData.categories);
-  const [tasks, setTasks] = useState<Task[]>(mockData.tasks);
+  // Fetch data using TanStack Query
+  const { data: categories = [], isLoading: isLoadingCategories, error: categoriesError } = useCategories();
+  const { data: tasks = [], isLoading: isLoadingTasks, error: tasksError } = useAllTasks();
+
+  // Mutations
+  const createCategoryMutation = useCreateCategory();
+  const deleteCategoryMutation = useDeleteCategory();
+  const createTaskMutation = useCreateTask();
+  const updateTaskMutation = useUpdateTask();
+  const deleteTaskMutation = useDeleteTask();
 
   // State for selected category
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
@@ -25,9 +40,6 @@ export default function Home() {
   const [showCategoryForm, setShowCategoryForm] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
   const [editingCategory, setEditingCategory] = useState<Category | undefined>(undefined);
-
-  // State for showing deleted categories
-  const [showDeleted, setShowDeleted] = useState(false);
 
   // Handler for adding a new task
   const handleAddTask = () => {
@@ -46,29 +58,28 @@ export default function Home() {
 
   // Handler for deleting a task
   const handleDeleteTask = (taskId: number) => {
-    setTasks(tasks.filter(task => task.id !== taskId));
+    deleteTaskMutation.mutate(taskId);
   };
 
   // Handler for submitting a task form
   const handleTaskSubmit = (taskData: Partial<Task>) => {
     if (editingTask) {
       // Update existing task
-      setTasks(tasks.map(task => 
-        task.id === editingTask.id 
-          ? { ...task, ...taskData, updatedAt: new Date() } 
-          : task
-      ));
+      updateTaskMutation.mutate({
+        id: editingTask.id,
+        data: {
+          name: taskData.name,
+          description: taskData.description,
+          categoryId: taskData.categoryId,
+        }
+      });
     } else {
       // Add new task
-      const newTask: Task = {
-        id: Math.max(0, ...tasks.map(t => t.id)) + 1,
+      createTaskMutation.mutate({
         name: taskData.name || '',
         description: taskData.description,
         categoryId: taskData.categoryId,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      setTasks([...tasks, newTask]);
+      });
     }
     setShowTaskForm(false);
   };
@@ -81,46 +92,42 @@ export default function Home() {
 
   // Handler for deleting a category
   const handleDeleteCategory = (categoryId: number) => {
-    // Remove category reference from tasks (set to null/undefined)
-    setTasks(tasks.map(task =>
-      task.categoryId === categoryId
-        ? { ...task, categoryId: undefined, updatedAt: new Date() }
-        : task
-    ));
-
-    // Actually delete the category (not soft delete)
-    setCategories(categories.filter(category => category.id !== categoryId));
-  };
-
-  // Helper function for UI
-  const getCategoryName = (task: Task): string => {
-    if (!task.categoryId) return "No Category";
-    const category = categories.find(c => c.id === task.categoryId);
-    return category?.name || "Unknown Category";
+    deleteCategoryMutation.mutate(categoryId);
   };
 
   // Handler for submitting a category form
   const handleCategorySubmit = (categoryData: Partial<Category>) => {
-    if (editingCategory) {
-      // Update existing category
-      setCategories(categories.map(category => 
-        category.id === editingCategory.id 
-          ? { ...category, ...categoryData, updatedAt: new Date() } 
-          : category
-      ));
-    } else {
-      // Add new category
-      const newCategory: Category = {
-        id: Math.max(0, ...categories.map(c => c.id)) + 1,
-        name: categoryData.name || '',
-        isDeleted: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      setCategories([...categories, newCategory]);
-    }
+    createCategoryMutation.mutate({
+      name: categoryData.name || '',
+    });
     setShowCategoryForm(false);
   };
+
+  // Loading state
+  if (isLoadingCategories || isLoadingTasks) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.mainContainer}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+            <p>Loading...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (categoriesError || tasksError) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.mainContainer}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+            <p>Error: {(categoriesError as Error)?.message || (tasksError as Error)?.message}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
@@ -131,7 +138,6 @@ export default function Home() {
           onSelectCategory={setSelectedCategoryId}
           onAddCategory={handleAddCategory}
           onDeleteCategory={handleDeleteCategory}
-          showDeleted={showDeleted}
         />
 
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }}>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Task, Category } from '../../types';
+import { Task, Category } from '@/types';
 
 import styles from './TodoList.module.css';
 
