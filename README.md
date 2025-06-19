@@ -7,6 +7,11 @@
 - `npm run prisma:migrate` - Create and apply database migrations (run this first)
 - `npm run prisma:seed` - Populate database with seed data
 
+3. Run the development server:
+```bash
+npm run dev
+```
+
 ## package.json scripts
 
 **Prisma/Database Commands:**

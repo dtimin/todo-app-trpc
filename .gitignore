@@ -12,3 +12,6 @@ prisma/generated
 
 # Docker volume for Postgres
 db-data/
+
+# vercel
+.vercel
