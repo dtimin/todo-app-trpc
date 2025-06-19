@@ -1,0 +1,106 @@
+:root {
+  /* Base colors */
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* UI colors */
+  --primary-color: #0070f3;
+  --primary-hover: #0060df;
+  --primary-light: rgba(0, 112, 243, 0.1);
+  --danger: #e53e3e;
+  --danger-light: rgba(229, 62, 62, 0.1);
+
+  /* Background colors */
+  --main-bg: #ffffff;
+  --sidebar-bg: #f9f9f9;
+  --card-bg: #ffffff;
+  --hover-bg: #f5f5f5;
+  --active-bg: #edf2ff;
+  --input-bg: #ffffff;
+  --tag-bg: #edf2ff;
+  --count-bg: #eaeaea;
+
+  /* Text colors */
+  --text-color: #171717;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --tag-color: #3182ce;
+  --count-color: #4a5568;
+
+  /* Border colors */
+  --border-color: #e2e8f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Base colors */
+    --background: #0a0a0a;
+    --foreground: #ededed;
+
+    /* UI colors */
+    --primary-color: #3182ce;
+    --primary-hover: #4299e1;
+    --primary-light: rgba(49, 130, 206, 0.2);
+    --danger: #f56565;
+    --danger-light: rgba(245, 101, 101, 0.2);
+
+    /* Background colors */
+    --main-bg: #0a0a0a;
+    --sidebar-bg: #111111;
+    --card-bg: #1a1a1a;
+    --hover-bg: #222222;
+    --active-bg: #2d3748;
+    --input-bg: #171717;
+    --tag-bg: #2d3748;
+    --count-bg: #2d3748;
+
+    /* Text colors */
+    --text-color: #ededed;
+    --text-secondary: #a0aec0;
+    --text-muted: #718096;
+    --tag-color: #63b3ed;
+    --count-color: #a0aec0;
+
+    /* Border colors */
+    --border-color: #2d3748;
+  }
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}

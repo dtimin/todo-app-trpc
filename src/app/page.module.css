@@ -1,0 +1,19 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.mainContainer {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .mainContainer {
+    flex-direction: column;
+  }
+}
