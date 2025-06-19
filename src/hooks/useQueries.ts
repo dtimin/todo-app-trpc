@@ -33,7 +33,7 @@ export function useDeleteCategory() {
   return api.categories.delete.useMutation({
     onSuccess: () => {
       utils.categories.getAll.invalidate();
-      utils.tasks.getAll.invalidate(); // Tasks might be affected
+      utils.tasks.getAll.invalidate(); // Also invalidating tasks since they might be affected
     },
   });
 }
@@ -43,7 +43,6 @@ export function useCreateTask() {
 
   return api.tasks.create.useMutation({
     onSuccess: () => {
-      // Invalidate tasks list to refetch
       utils.tasks.getAll.invalidate();
     },
   });

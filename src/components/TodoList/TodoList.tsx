@@ -1,17 +1,8 @@
 import React from 'react';
 
-import { Task, Category } from '@/types';
+import { Task, Category, TodoListProps } from '@/types';
 
 import styles from './TodoList.module.css';
-
-interface TodoListProps {
-  tasks: Task[];
-  categories: Category[];
-  selectedCategoryId: number | null;
-  onAddTask: () => void;
-  onEditTask: (taskId: number) => void;
-  onDeleteTask: (taskId: number) => void;
-}
 
 const TodoList: React.FC<TodoListProps> = ({
   tasks,

@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 
-import { Category } from '@/types';
+import { Category, CategorySidebarProps } from '@/types';
 
 import styles from './CategorySidebar.module.css';
-
-interface CategorySidebarProps {
-  categories: Category[];
-  selectedCategoryId: number | null;
-  onSelectCategory: (categoryId: number | null) => void;
-  onAddCategory: () => void;
-  onDeleteCategory: (categoryId: number) => void;
-}
 
 const CategorySidebar: React.FC<CategorySidebarProps> = ({
   categories,

@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './CategoryForm.module.css';
-import { Category } from '../../types';
-
-interface CategoryFormProps {
-  category?: Category; // Optional for edit mode
-  onSubmit: (category: Partial<Category>) => void;
-  onCancel: () => void;
-}
+import { Category, CategoryFormProps } from '@/types';
 
 const CategoryForm: React.FC<CategoryFormProps> = ({
   category,
@@ -15,7 +9,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
 }) => {
   // Form state
   const [name, setName] = useState('');
-  
+
   // Validation state
   const [errors, setErrors] = useState<{
     name?: string;
@@ -31,11 +25,11 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   // Form validation
   const validateForm = (): boolean => {
     const newErrors: { name?: string } = {};
-    
+
     if (!name.trim()) {
       newErrors.name = 'Category name is required';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -43,11 +37,11 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   // Form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     onSubmit({
       id: category?.id,
       name: name.trim(),
@@ -59,7 +53,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
       <h2 className={styles.formTitle}>
         {category ? 'Edit Category' : 'Add New Category'}
       </h2>
-      
+
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <label htmlFor="categoryName" className={styles.label}>
@@ -81,7 +75,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
             </div>
           )}
         </div>
-        
+
         <div className={styles.buttonGroup}>
           <button
             type="button"

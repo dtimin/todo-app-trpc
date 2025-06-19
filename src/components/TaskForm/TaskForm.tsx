@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './TaskForm.module.css';
-import { Task, Category } from '../../types';
-
-interface TaskFormProps {
-  task?: Task; // Optional for edit mode
-  categories: Category[];
-  onSubmit: (task: Partial<Task>) => void;
-  onCancel: () => void;
-}
+import { Task, Category, TaskFormProps } from '@/types';
 
 const TaskForm: React.FC<TaskFormProps> = ({
   task,
