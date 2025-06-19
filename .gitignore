@@ -1,0 +1,8 @@
+npm-debug.log
+node_modules
+
+# Idea
+.idea
+
+# Env
+.env
