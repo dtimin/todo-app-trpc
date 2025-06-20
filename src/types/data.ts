@@ -1,18 +1,10 @@
-/// TODO: Make instead a transformation in the tRPC from null to undefined
-export interface Category {
-	id: number;
-	name: string;
-	createdAt: string;
-	updatedAt: string;
-	tasks?: Task[] | null;
-}
+import type { inferRouterOutputs, inferRouterInputs } from '@trpc/server';
+import type { AppRouter } from '@/lib/trpc/root';
 
-export interface Task {
-	id: number;
-	name: string;
-	description?: string | null;
-	categoryId?: number | null; // foreign key to Category
-	createdAt: string;
-	updatedAt: string;
-	category?: Category | null;
-}
+// Infer types from tRPC router
+type RouterOutputs = inferRouterOutputs<AppRouter>;
+type RouterInputs = inferRouterInputs<AppRouter>;
+
+// Main entity types
+export type Category = RouterOutputs['categories']['getAll'][number];
+export type Task = RouterOutputs['tasks']['getAll'][number];

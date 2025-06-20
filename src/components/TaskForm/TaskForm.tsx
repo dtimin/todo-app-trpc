@@ -23,7 +23,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
     if (task) {
       setName(task.name);
       setDescription(task.description || '');
-      setCategoryId(task.categoryId);
+      setCategoryId(task.categoryId || undefined);
     }
   }, [task]);
 
